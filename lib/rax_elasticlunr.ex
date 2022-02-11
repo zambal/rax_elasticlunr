@@ -1,6 +1,6 @@
 defmodule RaxElasticlunr do
   alias Elasticlunr.{Field, Index, Pipeline}
-  @type index_name :: atom()
+  @type index_name :: any()
   @type document :: %{String.t() => Jason.Encoder.t()}
 
   # API
