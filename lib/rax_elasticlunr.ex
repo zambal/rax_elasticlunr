@@ -108,9 +108,13 @@ defmodule RaxElasticlunr do
     end
   end
 
-  def apply(_meta, {:drop_index, index_name}, state) do
+  def apply(%{index: ndx}, {:drop_index, index_name}, state) do
     if Map.has_key?(state.indices, index_name) do
-      {update_in(state.indices, &Map.delete(&1, index_name)), :ok}
+      effects = [
+        {:release_cursor, ndx, state},
+        :garbage_collection
+      ]
+      {update_in(state.indices, &Map.delete(&1, index_name)), :ok, effects}
     else
       {state, nil}
     end
