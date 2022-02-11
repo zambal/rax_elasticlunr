@@ -17,6 +17,13 @@ defmodule RaxElasticlunr do
     |> handle_response()
   end
 
+  @spec exists?(Rax.Cluster.name(), index_name()) :: boolean()
+  def exists?(cluster, index_name) do
+    Rax.query(cluster, fn state ->
+      Map.has_key?(state.indices, index_name)
+    end)
+  end
+
   @spec add_field(Rax.Cluster.name(), index_name(), Index.document_field(), keyword()) :: :ok
   def add_field(cluster, index_name, field, opts \\ []) do
     Rax.call(cluster, {:add_field, index_name, field, opts})
