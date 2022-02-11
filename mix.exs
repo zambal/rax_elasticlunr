@@ -21,7 +21,7 @@ defmodule RaxElasticlunr.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:rax, git: "https://github.com/zambal/rax.git"},
+      {:rax, git: "https://github.com/zambal/rax"},
       {:elasticlunr, "~> 0.6.4"}
     ]
   end
