@@ -6,8 +6,8 @@ defmodule RaxElasticlunr do
   # API
 
   @spec create_index(Rax.Cluster.name(), index_name(), Pipeline.t()) :: :ok
-  def create_index(cluster, index_name, %Pipeline{} = pipeline) do
-    Rax.call(cluster, {:create_index, index_name, pipeline})
+  def create_index(cluster, index_name, %Pipeline{} = pipeline, ref \\ "id") do
+    Rax.call(cluster, {:create_index, index_name, pipeline, ref})
     |> handle_response()
   end
 
@@ -99,11 +99,11 @@ defmodule RaxElasticlunr do
   end
 
   @doc false
-  def apply(_meta, {:create_index, index_name, pipeline}, state) do
+  def apply(_meta, {:create_index, index_name, pipeline, ref}, state) do
     if Map.has_key?(state.indices, index_name) do
       {state, {:error, :existing_index}}
     else
-      index = Index.new(pipeline: pipeline)
+      index = Index.new(pipeline: pipeline, ref: ref)
       {put_in(state.indices[index_name], index), :ok}
     end
   end
