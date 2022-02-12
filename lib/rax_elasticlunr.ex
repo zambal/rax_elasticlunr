@@ -2,12 +2,17 @@ defmodule RaxElasticlunr do
   alias Elasticlunr.{Field, Index, Pipeline}
   @type index_name :: any()
   @type document :: %{String.t() => Jason.Encoder.t()}
+  @type index_opts :: [
+    {:ref, Index.document_field()} |
+    {:store_positions, boolean()} |
+    {:store_documents, boolean()}
+  ]
 
   # API
 
-  @spec create_index(Rax.Cluster.name(), index_name(), Pipeline.t()) :: :ok
-  def create_index(cluster, index_name, %Pipeline{} = pipeline, ref \\ "id") do
-    Rax.call(cluster, {:create_index, index_name, pipeline, ref})
+  @spec create_index(Rax.Cluster.name(), index_name(), Pipeline.t(), index_opts()) :: :ok
+  def create_index(cluster, index_name, %Pipeline{} = pipeline, opts \\ []) do
+    Rax.call(cluster, {:create_index, index_name, pipeline, opts})
     |> handle_response()
   end
 
@@ -99,11 +104,12 @@ defmodule RaxElasticlunr do
   end
 
   @doc false
-  def apply(_meta, {:create_index, index_name, pipeline, ref}, state) do
+  def apply(_meta, {:create_index, index_name, pipeline, opts}, state) do
     if Map.has_key?(state.indices, index_name) do
       {state, {:error, :existing_index}}
     else
-      index = Index.new(pipeline: pipeline, ref: ref)
+      opts = Keyword.put(opts, :pipeline, pipeline)
+      index = Index.new(opts)
       {put_in(state.indices[index_name], index), :ok}
     end
   end
