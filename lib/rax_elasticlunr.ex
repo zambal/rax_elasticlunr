@@ -153,8 +153,13 @@ defmodule RaxElasticlunr do
   defp handle_apply(index_name, state, fun) do
     case Map.fetch(state.indices, index_name) do
       {:ok, index} ->
-        index = fun.(index)
-        {put_in(state.indices[index_name], index), :ok}
+        case handle_fun(fun, index) do
+          {:ok, index} ->
+            {put_in(state.indices[index_name], index), :ok}
+
+          {:error, e} ->
+            {state, {:error, e}}
+        end
 
       :error ->
         {state, :error}
@@ -165,7 +170,7 @@ defmodule RaxElasticlunr do
     Rax.query(cluster, fn state ->
       case Map.fetch(state.indices, index_name) do
         {:ok, index} ->
-          {:ok, fun.(index)}
+          handle_fun(fun, index)
 
         :error ->
           :error
@@ -178,7 +183,7 @@ defmodule RaxElasticlunr do
     Rax.local_query(cluster, fn state ->
       case Map.fetch(state.indices, index_name) do
         {:ok, index} ->
-          {:ok, fun.(index)}
+          handle_fun(fun, index)
 
         :error ->
           :error
@@ -187,8 +192,26 @@ defmodule RaxElasticlunr do
     |> handle_response()
   end
 
+  defp handle_fun(fun, index) do
+    try do
+      {:ok, fun.(index)}
+    catch
+      kind, error ->
+        {:error, {kind, error, __STACKTRACE__}}
+    end
+  end
+
   defp handle_response(:error) do
     raise "Elasticlunr index does not exist"
+  end
+  defp handle_response({:error, {:throw, reason, _stacktrace}}) do
+    throw(reason)
+  end
+  defp handle_response({:error, {:error, e, stacktrace}}) do
+    reraise(e, stacktrace)
+  end
+  defp handle_response({:error, {:exit, reason, _stacktrace}}) do
+    exit(reason)
   end
   defp handle_response({:ok, resp}), do: resp
   defp handle_response(:ok), do: :ok
