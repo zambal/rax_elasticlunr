@@ -208,7 +208,7 @@ defmodule RaxElasticlunr do
     throw(reason)
   end
   defp handle_response({:error, {:error, e, stacktrace}}) do
-    reraise(e, stacktrace)
+    reraise(Exception.normalize(:error, e, stacktrace), stacktrace)
   end
   defp handle_response({:error, {:exit, reason, _stacktrace}}) do
     exit(reason)
