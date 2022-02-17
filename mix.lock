@@ -4,7 +4,7 @@
   "gen_batch_server": {:hex, :gen_batch_server, "0.8.7", "1d91a3605d3110ec791f00d5968e86e62fd4c6979e760796a51d50a7acc7a40d", [:rebar3], [], "hexpm", "94a49a528486298b009d2a1b452132c0a0d68b3e89d17d3764cb1ec879b7557a"},
   "jason": {:hex, :jason, "1.3.0", "fa6b82a934feb176263ad2df0dbd91bf633d4a46ebfdffea0c8ae82953714946", [:mix], [{:decimal, "~> 1.0 or ~> 2.0", [hex: :decimal, repo: "hexpm", optional: true]}], "hexpm", "53fc1f51255390e0ec7e50f9cb41e751c260d065dcba2bf0d08dc51a4002c2ac"},
   "ra": {:hex, :ra, "2.0.4", "9ef24af930c699bccb12516ca91db8255093e4df560baf54c65d45372e73639e", [:rebar3], [{:aten, "0.5.7", [hex: :aten, repo: "hexpm", optional: false]}, {:gen_batch_server, "0.8.7", [hex: :gen_batch_server, repo: "hexpm", optional: false]}], "hexpm", "8e3550be1df23b5b1ba9d02e0c8c79febb8eae8a6dcbbba746bd5180f39aee1c"},
-  "rax": {:git, "https://github.com/zambal/rax", "d8f23ed3aa55240b0678e8a77bc3654ffd62d4d1", []},
+  "rax": {:git, "https://github.com/zambal/rax", "0c07d6242e3f7289bee952d02b20f0b3cb12ff23", []},
   "stemmer": {:hex, :stemmer, "1.1.0", "71221331ced40832b47e6989a12dd9de1b15c982043d1014742be83c34ec9e79", [:mix], [], "hexpm", "0cb5faf73476b84500e371ff39fd9a494f60ab31d991689c1cd53b920556228f"},
   "uuid": {:hex, :uuid, "1.1.8", "e22fc04499de0de3ed1116b770c7737779f226ceefa0badb3592e64d5cfb4eb9", [:mix], [], "hexpm", "c790593b4c3b601f5dc2378baae7efaf5b3d73c4c6456ba85759905be792f2ac"},
 }
