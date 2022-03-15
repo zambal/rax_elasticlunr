@@ -22,7 +22,7 @@ defmodule RaxElasticlunr.MixProject do
   defp deps do
     [
       {:rax, git: "https://github.com/zambal/rax"},
-      {:elasticlunr, "~> 0.6.4"}
+      {:elasticlunr, "~> 0.6"}
     ]
   end
 end
